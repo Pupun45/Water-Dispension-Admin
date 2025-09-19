@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import "../App.css";
 
+// Function to get current formatted date-time
+const getCurrentDateTime = () => {
+  const now = new Date();
+  return now.toLocaleString(); // Example: "9/19/2025, 10:32:45 AM"
+};
+
 const initialCustomers = [
   {
     id: 1,
@@ -9,6 +15,7 @@ const initialCustomers = [
     email: "a@gmail.com",
     phone: "+919119292600",
     sessions: 5,
+    dateTime: getCurrentDateTime(),
   },
   {
     id: 2,
@@ -16,8 +23,8 @@ const initialCustomers = [
     email: "j@gmail.com",
     phone: "+919776833939",
     sessions: 1,
+    dateTime: getCurrentDateTime(),
   },
-
 ];
 
 const Customers = () => {
@@ -58,19 +65,17 @@ const Customers = () => {
           <div>Email</div>
           <div>Phone</div>
           <div>No. of Sessions</div>
+          <div>Date & Time</div>
         </div>
         <div className="table-body">
           {filteredCustomers.map((cust) => (
             <div className="table-row" key={cust.id}>
-              <div className="name-cell">
-                {cust.name}
-              </div>
-              <div className="user-type">
-                Water
-              </div>
+              <div className="name-cell">{cust.name}</div>
+              <div className="user-type">Water</div>
               <div>{cust.email}</div>
               <div>{cust.phone}</div>
               <div>{cust.sessions}</div>
+              <div>{cust.dateTime}</div>
             </div>
           ))}
         </div>

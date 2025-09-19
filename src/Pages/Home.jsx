@@ -21,6 +21,7 @@ const Home = () => {
   return (
     <div className="home-dashboard-container">
       <div className="home-content-container">
+        <h2 className="home-card-title">Water Dispensation Station</h2>
         <div className="home-grid-layout">
           <div className="home-col-span-1 home-space-y-6">
             <div className="home-card home-map-card">
@@ -38,7 +39,6 @@ const Home = () => {
 
           <div className="home-col-span-2 home-space-y-6">
             <div>
-              <h2 className="home-card-title">Water Dispensation Station</h2>
               <div className="home-grid-layout home-metrics-grid">
                 <StatCard {...Dispension.total} title="Total Dispension" />
                 <StatCard {...Dispension.available} title="Available" />

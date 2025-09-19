@@ -82,11 +82,11 @@ const IndiaMap = () => {
       id="chartdiv"
       className="Ind"
       style={{
-        width: "100%",
-        height: "450px",
+          width: "100%",
+          height: "450px",
       }}
     >
-    </div>
+    </div >
   );
 };
 

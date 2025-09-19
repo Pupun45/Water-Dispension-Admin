@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaHome, FaMapMarkerAlt, FaBolt, FaUsers, FaTags, FaChartBar, FaFileInvoice, FaRupeeSign, FaClipboardList, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { MdKeyboardArrowDown } from 'react-icons/md';
+import { FaHome, FaMapMarkerAlt, FaUserClock, FaUsers, FaTags, FaChartBar, FaFileInvoice, FaRupeeSign, FaClipboardList, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import '../App.css';
 import logo from '../Components/logo (2).png'
 
@@ -50,6 +49,11 @@ const Sidebar = () => {
         <li>
           <NavLink to="/analytics" className={({ isActive }) => isActive ? 'active' : ''}>
             <FaChartBar /> {!collapsed && <span>Analytics</span>}
+          </NavLink>
+        </li>
+         <li>
+          <NavLink to="/session" className={({ isActive }) => isActive ? 'active' : ''}>
+            <FaUserClock /> {!collapsed && <span>Session</span>}
           </NavLink>
         </li>
         <li>

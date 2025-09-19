@@ -28,10 +28,23 @@ const Station = () => {
       ];
   };
 
+  const states = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+    "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+    "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+    "Uttar Pradesh", "Uttarakhand", "West Bengal", "Delhi", "Jammu & Kashmir"
+  ];
+
   const [stations, setStations] = useState(initialStations);
+  const [filteredStations, setFilteredStations] = useState(initialStations);
   const [selectedStation, setSelectedStation] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [activeTab, setActiveTab] = useState("Chargers");
+  const [selectedState, setSelectedState] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
 
   const [newStation, setNewStation] = useState({
     name: "",
@@ -53,16 +66,39 @@ const Station = () => {
   });
 
   useEffect(() => {
-    localStorage.setItem("stationData", JSON.stringify(stations));
-  }, [stations]);
+  localStorage.setItem("stationData", JSON.stringify(stations));
+  applyFilter(selectedState, searchQuery);
+}, [stations]);
+
+  const handleStateChange = (e) => {
+    const state = e.target.value;
+    setSelectedState(state);
+    applyFilter(state);
+  };
+
+  const applyFilter = (state, query = searchQuery) => {
+  let result = stations;
+
+  if (state !== "all") {
+    result = result.filter((item) => item.state === state);
+  }
+
+  if (query.trim() !== "") {
+    const lowerQuery = query.toLowerCase();
+    result = result.filter(
+      (item) =>
+        item.name.toLowerCase().includes(lowerQuery) ||
+        item.city.toLowerCase().includes(lowerQuery)
+    );
+  }
+
+  setFilteredStations(result);
+};
+
 
   const handleAddStation = (e) => {
     e.preventDefault();
-
-    // Add the new station with details
     setStations([...stations, newStation]);
-
-    // Reset form
     setNewStation({
       name: "",
       connectors: "",
@@ -81,7 +117,6 @@ const Station = () => {
         location: "",
       },
     });
-
     setShowAddForm(false);
   };
 
@@ -94,15 +129,46 @@ const Station = () => {
   return (
     <div className="station-container">
       <div className="station-header">
-        <h2>Stations</h2>
+        <h2>
+          Stations
+        </h2>
+        <div className="filter-row">
+          <select
+            value={selectedState}
+            onChange={handleStateChange}
+            className="action-btn outline"
+          >
+            <option value="all">All States</option>
+            {states.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="station-header-actions">
+          <div className="station-right">
+            <input
+              type="text"
+              className="sation-data"
+              placeholder="Search by station name or city"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                applyFilter(selectedState, e.target.value);
+              }}
+            />
+
+          </div>
           <button className="station-add-btn" onClick={() => setShowAddForm(true)}>
             + Add
           </button>
-          <span className="station-total">Total Stations: {stations.length}</span>
+          <span className="station-total">
+            Total Stations: {filteredStations.length}
+          </span>
         </div>
       </div>
-
       {/* Station Table */}
       <div className="station-table-wrapper">
         <table className="station-table">
@@ -118,7 +184,7 @@ const Station = () => {
             </tr>
           </thead>
           <tbody>
-            {stations.map((station, index) => (
+            {filteredStations.map((station, index) => (
               <tr
                 key={index}
                 onClick={() => setSelectedStation(station)}
@@ -129,7 +195,10 @@ const Station = () => {
                 <td>
                   <div className="station-status-container">
                     {station.status.map((s, idx) => (
-                      <span key={idx} className={`station-status-badge ${s.color}`}>
+                      <span
+                        key={idx}
+                        className={`station-status-badge ${s.color}`}
+                      >
                         <span className="station-dot"></span> {s.count}
                       </span>
                     ))}
@@ -149,7 +218,10 @@ const Station = () => {
       {showAddForm && (
         <div className="station-modal">
           <div className="station-modal-content">
-            <button className="station-close-btn" onClick={() => setShowAddForm(false)}>
+            <button
+              className="station-close-btn"
+              onClick={() => setShowAddForm(false)}
+            >
               ✖
             </button>
             <h2>Add New Station</h2>
@@ -158,42 +230,54 @@ const Station = () => {
                 type="text"
                 placeholder="Station Name"
                 value={newStation.name}
-                onChange={(e) => setNewStation({ ...newStation, name: e.target.value })}
+                onChange={(e) =>
+                  setNewStation({ ...newStation, name: e.target.value })
+                }
                 required
               />
               <input
                 type="number"
                 placeholder="Total Connectors"
                 value={newStation.connectors}
-                onChange={(e) => setNewStation({ ...newStation, connectors: e.target.value })}
+                onChange={(e) =>
+                  setNewStation({ ...newStation, connectors: e.target.value })
+                }
                 required
               />
               <input
                 type="text"
                 placeholder="City"
                 value={newStation.city}
-                onChange={(e) => setNewStation({ ...newStation, city: e.target.value })}
+                onChange={(e) =>
+                  setNewStation({ ...newStation, city: e.target.value })
+                }
                 required
               />
               <input
                 type="number"
                 placeholder="Pincode"
                 value={newStation.pincode}
-                onChange={(e) => setNewStation({ ...newStation, pincode: e.target.value })}
+                onChange={(e) =>
+                  setNewStation({ ...newStation, pincode: e.target.value })
+                }
                 required
               />
               <input
                 type="text"
                 placeholder="State"
                 value={newStation.state}
-                onChange={(e) => setNewStation({ ...newStation, state: e.target.value })}
+                onChange={(e) =>
+                  setNewStation({ ...newStation, state: e.target.value })
+                }
                 required
               />
               <input
                 type="text"
                 placeholder="Publish (Yes/No)"
                 value={newStation.publish}
-                onChange={(e) => setNewStation({ ...newStation, publish: e.target.value })}
+                onChange={(e) =>
+                  setNewStation({ ...newStation, publish: e.target.value })
+                }
                 required
               />
               {/* Details */}
@@ -226,7 +310,10 @@ const Station = () => {
                 onChange={(e) =>
                   setNewStation({
                     ...newStation,
-                    details: { ...newStation.details, latitude: e.target.value },
+                    details: {
+                      ...newStation.details,
+                      latitude: e.target.value,
+                    },
                   })
                 }
               />
@@ -237,7 +324,10 @@ const Station = () => {
                 onChange={(e) =>
                   setNewStation({
                     ...newStation,
-                    details: { ...newStation.details, longitude: e.target.value },
+                    details: {
+                      ...newStation.details,
+                      longitude: e.target.value,
+                    },
                   })
                 }
               />
@@ -248,7 +338,10 @@ const Station = () => {
                 onChange={(e) =>
                   setNewStation({
                     ...newStation,
-                    details: { ...newStation.details, location: e.target.value },
+                    details: {
+                      ...newStation.details,
+                      location: e.target.value,
+                    },
                   })
                 }
               />
@@ -258,17 +351,22 @@ const Station = () => {
         </div>
       )}
 
-      {/* Slide panel */}
+      {/* Slide Panel */}
       <div className={`station-slide-panel ${selectedStation ? "open" : ""}`}>
-        <button className="station-close-btn" onClick={() => setSelectedStation(null)}>
+        <button
+          className="station-close-btn"
+          onClick={() => setSelectedStation(null)}
+        >
           ✖
         </button>
         {selectedStation && (
           <>
             <div className="station-panel-content two-column-layout">
-              {/* LEFT SIDE */}
+              {/* LEFT */}
               <div className="station-details-left">
-                <p className="station-address">{selectedStation.details?.location}</p>
+                <p className="station-address">
+                  {selectedStation.details?.location}
+                </p>
                 <div className="station-map-container">
                   {selectedStation && selectedStation.details && (
                     <iframe
@@ -281,8 +379,6 @@ const Station = () => {
                       src={`https://maps.google.com/maps?q=${selectedStation.details.latitude},${selectedStation.details.longitude}&z=15&output=embed`}
                     />
                   )}
-
-
                 </div>
                 <div className="station-info-cards">
                   <div className="station-card">
@@ -300,13 +396,14 @@ const Station = () => {
                   <div className="station-card">
                     <p>Geolocation</p>
                     <h4>
-                      {selectedStation.details?.latitude}, {selectedStation.details?.longitude}
+                      {selectedStation.details?.latitude},{" "}
+                      {selectedStation.details?.longitude}
                     </h4>
                   </div>
                 </div>
               </div>
 
-              {/* RIGHT SIDE */}
+              {/* RIGHT */}
               <div className="station-details-right">
                 <div className="station-tab-header">
                   {["Chargers", "Station Statistics", "Tokens"].map((tab) => (
@@ -368,26 +465,7 @@ const Station = () => {
                   </div>
                 )}
 
-                {activeTab === "Tokens" && (
-                  <h2>Not ready................</h2>
-                  // <table className="station-overview-table">
-                  //   <thead>
-                  //     <tr>
-                  //       <th>Name</th>
-                  //       <th>Expiry Date</th>
-                  //       <th>Code</th>
-                  //     </tr>
-                  //   </thead>
-                  //   <tbody>
-                  //     <tr>
-                  //       <td>ABC</td>
-                  //       <td>24-06-2023</td>
-                  //       <td>###@@@###</td>
-                  //     </tr>
-                  //   </tbody>
-                  // </table>
-                )}
-
+                {activeTab === "Tokens" && <h2>Not ready................</h2>}
               </div>
             </div>
           </>

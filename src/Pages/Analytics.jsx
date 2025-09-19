@@ -54,7 +54,7 @@ function Analytics() {
   ];
 
   return (
-    <div className="analytics-wrapper">
+    <div className="analytics-wrappe">
        <h2>Analytics</h2>
       <div className="card-grid">
         {cardData.map((card, index) => (
