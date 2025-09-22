@@ -62,7 +62,7 @@ const styles = {
     background: isActive ? "#f3f0ff" : "#fff",
   }),
   cardTitle: { margin: 0, fontSize: "14px", color: "#555" },
-  cardValue: { fontSize: "18px", fontWeight: "bold", margin: "4px 0" },
+  cardValue: { fontSize: "14px", fontWeight: "bold", margin: "4px 0" },
   cardChange: { fontSize: "13px" },
   chartContainer: { borderRadius: "8px", padding: "20px" },
 };

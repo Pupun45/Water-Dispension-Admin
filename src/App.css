@@ -47,7 +47,7 @@
 
   .menu {
     list-style: none;
-    padding-left: 5%;
+    padding-left: 10%;
     flex-grow: 1;
   }
 
@@ -83,7 +83,7 @@
     color: white;
     text-decoration: none;
     transition: background 0.3s;
-    margin-right: 16px;
+    margin-right: 35px;
   }
 
   .menu li a:hover {
@@ -381,10 +381,6 @@
   }
 
   /* ------------------------------------------- Station.jsx --------------------------------------------*/
-  .filter-row {
-    margin-top: 2px;
-    padding-top: 10px;
-  }
 .sation-data{
   width: 600px;
     padding: 8px 14px;
@@ -396,13 +392,14 @@
     padding: 20px;
   }
   .station-header {
+    padding: 10px;
     padding-right: 45px;
     padding-left: 15px;
     background-color: #e7ebf0;
     border-radius: 12px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
   .station-header h1 {
@@ -532,8 +529,8 @@
     background: #fff;
     padding: 20px;
     border-radius: 8px;
-    width: 90%;
-    max-width: 400px;
+    width: 100%;
+    max-width: 500px;
     position: relative;
   }
 
@@ -560,7 +557,33 @@
     border-radius: 6px;
     border: 1px solid #ccc;
   }
-
+.tank{
+  padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 25%;
+}
+.publish{
+  padding-left: 27%;
+}
+.pincode{
+  padding-left: 11%;
+}
+.Connectors{
+  width: 27%;
+}
+.State{
+  width: 100%;
+}
+.Longitude{
+  padding-left: 4%;
+}
+.Address{
+  width: 97%;
+}
+.Tank{
+  padding-left: 7%;
+}
   .station-form button {
     background: #007bff;
     color: white;
@@ -830,7 +853,7 @@
   }
 
   .sessions-title {
-    font-size: 22px;
+    font-size: 14px;
     font-weight: bold;
     margin-bottom: 20px;
   }
@@ -855,7 +878,7 @@
   }
 
   .stat-card p {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     margin-top: 5px;
   }

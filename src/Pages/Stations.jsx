@@ -75,6 +75,32 @@ const Station = () => {
     setSelectedState(state);
     applyFilter(state);
   };
+useEffect(() => {
+  const fetchAddress = async () => {
+    const { latitude, longitude } = newStation.details;
+    if (!latitude || !longitude) return;
+
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      );
+      const data = await response.json();
+      if (data?.display_name) {
+        setNewStation((prev) => ({
+          ...prev,
+          details: {
+            ...prev.details,
+            location: data.display_name,
+          },
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching address:", error);
+    }
+  };
+
+  fetchAddress();
+}, [newStation.details.latitude, newStation.details.longitude]);
 
   const applyFilter = (state, query = searchQuery) => {
   let result = stations;
@@ -128,10 +154,10 @@ const Station = () => {
 
   return (
     <div className="station-container">
-      <div className="station-header">
-        <h2>
+    <h2>
           Stations
         </h2>
+      <div className="station-header">
         <div className="filter-row">
           <select
             value={selectedState}
@@ -226,127 +252,186 @@ const Station = () => {
             </button>
             <h2>Add New Station</h2>
             <form onSubmit={handleAddStation} className="station-form">
-              <input
-                type="text"
-                placeholder="Station Name"
-                value={newStation.name}
-                onChange={(e) =>
-                  setNewStation({ ...newStation, name: e.target.value })
-                }
-                required
-              />
-              <input
-                type="number"
-                placeholder="Total Connectors"
-                value={newStation.connectors}
-                onChange={(e) =>
-                  setNewStation({ ...newStation, connectors: e.target.value })
-                }
-                required
-              />
-              <input
-                type="text"
-                placeholder="City"
-                value={newStation.city}
-                onChange={(e) =>
-                  setNewStation({ ...newStation, city: e.target.value })
-                }
-                required
-              />
-              <input
-                type="number"
-                placeholder="Pincode"
-                value={newStation.pincode}
-                onChange={(e) =>
-                  setNewStation({ ...newStation, pincode: e.target.value })
-                }
-                required
-              />
-              <input
-                type="text"
-                placeholder="State"
-                value={newStation.state}
-                onChange={(e) =>
-                  setNewStation({ ...newStation, state: e.target.value })
-                }
-                required
-              />
-              <input
-                type="text"
-                placeholder="Publish (Yes/No)"
-                value={newStation.publish}
-                onChange={(e) =>
-                  setNewStation({ ...newStation, publish: e.target.value })
-                }
-                required
-              />
-              {/* Details */}
-              <input
-                type="text"
-                placeholder="Mobile"
-                value={newStation.details.mobile}
-                onChange={(e) =>
-                  setNewStation({
-                    ...newStation,
-                    details: { ...newStation.details, mobile: e.target.value },
-                  })
-                }
-              />
-              <input
-                type="number"
-                placeholder="Tank Capacity (L)"
-                value={newStation.details.tank}
-                onChange={(e) =>
-                  setNewStation({
-                    ...newStation,
-                    details: { ...newStation.details, tank: e.target.value },
-                  })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Latitude"
-                value={newStation.details.latitude}
-                onChange={(e) =>
-                  setNewStation({
-                    ...newStation,
-                    details: {
-                      ...newStation.details,
-                      latitude: e.target.value,
-                    },
-                  })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Longitude"
-                value={newStation.details.longitude}
-                onChange={(e) =>
-                  setNewStation({
-                    ...newStation,
-                    details: {
-                      ...newStation.details,
-                      longitude: e.target.value,
-                    },
-                  })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Location"
-                value={newStation.details.location}
-                onChange={(e) =>
-                  setNewStation({
-                    ...newStation,
-                    details: {
-                      ...newStation.details,
-                      location: e.target.value,
-                    },
-                  })
-                }
-              />
-              <button type="submit">Add Station</button>
-            </form>
+  <label>
+    Station Name:
+    <input
+      type="text"
+      value={newStation.name}
+      onChange={(e) =>
+        setNewStation({ ...newStation, name: e.target.value })
+      }
+      required
+    />
+     <label>
+    Connectors:
+    <input
+      className="Connectors"
+      type="number"
+      value={newStation.connectors}
+      onChange={(e) =>
+        setNewStation({ ...newStation, connectors: e.target.value })
+      }
+      required
+    />
+  </label>
+  </label>
+  <label>
+    State:
+    <select
+      className="State"
+      value={newStation.state}
+      onChange={(e) =>
+        setNewStation({ ...newStation, state: e.target.value })
+      }
+      required
+    >
+      <option value="">Select State</option>
+      {states.map((state, idx) => (
+        <option key={idx} value={state}>{state}</option>
+      ))}
+    </select>
+  </label>
+
+  <label>
+    City:
+    <input
+      type="text"
+      value={newStation.city}
+      onChange={(e) =>
+        setNewStation({ ...newStation, city: e.target.value })
+      }
+      required
+    />
+     <label className="pincode">
+    Pincode:
+    <input
+      type="number"
+      value={newStation.pincode}
+      onChange={(e) =>
+        setNewStation({ ...newStation, pincode: e.target.value })
+      }
+      required
+    />
+  </label>
+  </label>
+
+ 
+
+  <label>
+    Public Station:
+    <input
+      type="checkbox"
+      checked={newStation.details.type === "Public"}
+      onChange={(e) =>
+        setNewStation({
+          ...newStation,
+          details: {
+            ...newStation.details,
+            type: e.target.checked ? "Public" : "Private",
+          },
+        })
+      }
+    />
+    <span>{newStation.details.type === "Public" ? "Yes" : "No"}</span>
+    <label className="publish">
+    Publish:
+    <select
+      value={newStation.publish}
+      onChange={(e) =>
+        setNewStation({ ...newStation, publish: e.target.value })
+      }
+      required
+    >
+      <option value="">Select</option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+  </label>
+  </label>
+
+  
+
+  <label>
+    Mobile No:
+    <input 
+    className="tank"
+      type="tel"
+      value={newStation.details.mobile}
+      placeholder="+91XXXXXXXXXX"
+      onChange={(e) =>
+        setNewStation({
+          ...newStation,
+          details: {
+            ...newStation.details,
+            mobile: e.target.value.startsWith("+91")
+              ? e.target.value
+              : `+91${e.target.value}`,
+          },
+        })
+      }
+      required
+    />
+    
+  <label className="Tank" >
+    Tank Capacity (L):
+    <input className="tank"
+      type="number"
+      value={newStation.details.tank}
+      onChange={(e) =>
+        setNewStation({
+          ...newStation,
+          details: { ...newStation.details, tank: e.target.value },
+        })
+      }
+      required
+    />
+  </label>
+  </label>
+
+
+  <label>
+    Latitude:
+    <input
+      type="text"
+      value={newStation.details.latitude}
+      onChange={(e) => {
+        const latitude = e.target.value;
+        setNewStation({
+          ...newStation,
+          details: { ...newStation.details, latitude },
+        });
+      }}
+      required
+    />
+     <label className="Longitude">
+    Longitude:
+    <input
+      type="text"
+      value={newStation.details.longitude}
+      onChange={(e) => {
+        const longitude = e.target.value;
+        setNewStation({
+          ...newStation,
+          details: { ...newStation.details, longitude },
+        });
+      }}
+      required
+    />
+  </label>
+  </label>
+  <label>
+    Address (from Geo):
+    <input
+    className="Address"
+      type="text"
+      value={newStation.details.location}
+      readOnly
+    />
+  </label>
+
+  <button type="submit">Add Station</button>
+</form>
+
           </div>
         </div>
       )}
