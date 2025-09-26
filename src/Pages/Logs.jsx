@@ -104,7 +104,7 @@ const Logs = () => {
       <span>
         Total Logs: <strong>{totalLogs}</strong>
       </span>
-      <h2>Logs</h2>
+      <h2  class="home-card-title">Logs</h2>
       <div className="action-bar">
         <button className="action-btn outline">
           <FiFilter size={16} />

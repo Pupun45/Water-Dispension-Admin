@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import {
-  FiFilter,
-  FiCalendar,
-  FiSearch,
-  FiRefreshCw,
   FiDownload,
 } from "react-icons/fi";
 import "../App.css";
@@ -16,8 +12,8 @@ const Sessions = () => {
       type: "Individual",
       sessionId: "432377961",
       station: "diodeEV 30kW DC-DNFT-ODO2001",
-      chargerId: "0912f698",
-      connectorId: "1",
+      StationId: "0912f698",
+      NozzelId: "1",
       meterStart: "384340 Wh",
     },
     {
@@ -26,8 +22,8 @@ const Sessions = () => {
       type: "Individual",
       sessionId: "665773800",
       station: "diodeEV 10kW AC-DNFT-ODO2002",
-      chargerId: "e8048de1",
-      connectorId: "3",
+      StationId: "0912f658",
+      NozzelId: "2",
       meterStart: "11943 Wh",
     },
   ]);
@@ -49,8 +45,8 @@ const Sessions = () => {
       "Customer Type",
       "Session ID",
       "Station",
-      "Charger ID",
-      "Connector ID",
+      "Station ID",
+      "Nozzel ID",
       "Meter Start",
     ];
     const rows = filteredSessions.map((s) => [
@@ -59,8 +55,8 @@ const Sessions = () => {
       s.type,
       s.sessionId,
       s.station,
-      s.chargerId,
-      s.connectorId,
+      s.StationId,
+      s.NozzelId,
       s.meterStart,
     ]);
 
@@ -78,7 +74,7 @@ const Sessions = () => {
 
   return (
     <div className="sessions-container">
-      <h2 className="sessions-title">Sessions</h2>
+      <h2 class="home-card-title">Sessions</h2>
 
       <div className="sessions-stats">
         <div className="stat-card">
@@ -101,7 +97,7 @@ const Sessions = () => {
           value={filterChargerId}
           onChange={(e) => setFilterChargerId(e.target.value)}
         >
-          <option value="">All Chargers</option>
+          <option value="">All Dispension</option>
           <option value="0912f698">0912f698</option>
           <option value="e8048de1">e8048de1</option>
         </select>
@@ -129,8 +125,8 @@ const Sessions = () => {
             <th>Customer Type</th>
             <th>Session ID</th>
             <th>Station</th>
-            <th>Charger ID</th>
-            <th>Connector ID</th>
+            <th>Station ID</th>
+            <th>Nozzel ID</th>
             <th>Meter Start</th>
           </tr>
         </thead>
@@ -151,8 +147,8 @@ const Sessions = () => {
               <td>{s.type}</td>
               <td>{s.sessionId}</td>
               <td>{s.station}</td>
-              <td>{s.chargerId}</td>
-              <td>{s.connectorId}</td>
+              <td>{s.StationId}</td>
+              <td>{s.NozzelId}</td>
               <td>{s.meterStart}</td>
             </tr>
           ))}

@@ -41,7 +41,7 @@ const Station = () => {
   const [filteredStations, setFilteredStations] = useState(initialStations);
   const [selectedStation, setSelectedStation] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [activeTab, setActiveTab] = useState("Chargers");
+  const [activeTab, setActiveTab] = useState("Dispensions");
   const [selectedState, setSelectedState] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -66,60 +66,61 @@ const Station = () => {
   });
 
   useEffect(() => {
-  localStorage.setItem("stationData", JSON.stringify(stations));
-  applyFilter(selectedState, searchQuery);
-}, [stations]);
+    localStorage.setItem("stationData", JSON.stringify(stations));
+    applyFilter(selectedState, searchQuery);
+  }, [stations]);
 
   const handleStateChange = (e) => {
     const state = e.target.value;
     setSelectedState(state);
     applyFilter(state);
   };
-useEffect(() => {
-  const fetchAddress = async () => {
-    const { latitude, longitude } = newStation.details;
-    if (!latitude || !longitude) return;
 
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-      );
-      const data = await response.json();
-      if (data?.display_name) {
-        setNewStation((prev) => ({
-          ...prev,
-          details: {
-            ...prev.details,
-            location: data.display_name,
-          },
-        }));
+  useEffect(() => {
+    const fetchAddress = async () => {
+      const { latitude, longitude } = newStation.details;
+      if (!latitude || !longitude) return;
+
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+        );
+        const data = await response.json();
+        if (data?.display_name) {
+          setNewStation((prev) => ({
+            ...prev,
+            details: {
+              ...prev.details,
+              location: data.display_name,
+            },
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching address:", error);
       }
-    } catch (error) {
-      console.error("Error fetching address:", error);
-    }
-  };
+    };
 
-  fetchAddress();
-}, [newStation.details.latitude, newStation.details.longitude]);
+    fetchAddress();
+  }, [newStation.details.latitude, newStation.details.longitude]);
 
   const applyFilter = (state, query = searchQuery) => {
-  let result = stations;
+    let result = stations;
 
-  if (state !== "all") {
-    result = result.filter((item) => item.state === state);
-  }
+    if (state !== "all") {
+      result = result.filter((item) => item.state === state);
+    }
 
-  if (query.trim() !== "") {
-    const lowerQuery = query.toLowerCase();
-    result = result.filter(
-      (item) =>
-        item.name.toLowerCase().includes(lowerQuery) ||
-        item.city.toLowerCase().includes(lowerQuery)
-    );
-  }
+    if (query.trim() !== "") {
+      const lowerQuery = query.toLowerCase();
+      result = result.filter(
+        (item) =>
+          item.name.toLowerCase().includes(lowerQuery) ||
+          item.city.toLowerCase().includes(lowerQuery)
+      );
+    }
 
-  setFilteredStations(result);
-};
+    setFilteredStations(result);
+  };
 
 
   const handleAddStation = (e) => {
@@ -151,12 +152,21 @@ useEffect(() => {
     setStations((prev) => prev.filter((s) => s.name !== selectedStation.name));
     setSelectedStation(null);
   };
+  const handleRestartStation = () => {
+    if (!selectedStation) return;
+    alert(`${selectedStation.name} is restarting...`);
+  };
+
+  const handleStartServices = () => {
+    if (!selectedStation) return;
+    alert(`Services started for ${selectedStation.name}`);
+  };
 
   return (
     <div className="station-container">
-    <h2>
-          Stations
-        </h2>
+      <h2 class="home-card-title">
+        Stations
+      </h2>
       <div className="station-header">
         <div className="filter-row">
           <select
@@ -200,9 +210,9 @@ useEffect(() => {
         <table className="station-table">
           <thead>
             <tr>
-              <th>Station Name</th>
-              <th>Total Connectors</th>
-              <th>Connector Status</th>
+              <th>Dispension Name</th>
+              <th>Total Nozzel</th>
+              <th>Nozzel Status</th>
               <th>City</th>
               <th>Pincode</th>
               <th>State</th>
@@ -245,192 +255,193 @@ useEffect(() => {
         <div className="station-modal">
           <div className="station-modal-content">
             <button
-              className="station-close-btn"
+              className="station-close"
               onClick={() => setShowAddForm(false)}
             >
               ✖
             </button>
-            <h2>Add New Station</h2>
+            <h2>Add New Dispension</h2>
             <form onSubmit={handleAddStation} className="station-form">
-  <label>
-    Station Name:
-    <input
-      type="text"
-      value={newStation.name}
-      onChange={(e) =>
-        setNewStation({ ...newStation, name: e.target.value })
-      }
-      required
-    />
-     <label>
-    Connectors:
-    <input
-      className="Connectors"
-      type="number"
-      value={newStation.connectors}
-      onChange={(e) =>
-        setNewStation({ ...newStation, connectors: e.target.value })
-      }
-      required
-    />
-  </label>
-  </label>
-  <label>
-    State:
-    <select
-      className="State"
-      value={newStation.state}
-      onChange={(e) =>
-        setNewStation({ ...newStation, state: e.target.value })
-      }
-      required
-    >
-      <option value="">Select State</option>
-      {states.map((state, idx) => (
-        <option key={idx} value={state}>{state}</option>
-      ))}
-    </select>
-  </label>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Station Name</label>
+                  <input
+                    type="text"
+                    value={newStation.name}
+                    onChange={(e) =>
+                      setNewStation({ ...newStation, name: e.target.value })
+                    }
+                    required
+                  />
+                </div>
 
-  <label>
-    City:
-    <input
-      type="text"
-      value={newStation.city}
-      onChange={(e) =>
-        setNewStation({ ...newStation, city: e.target.value })
-      }
-      required
-    />
-     <label className="pincode">
-    Pincode:
-    <input
-      type="number"
-      value={newStation.pincode}
-      onChange={(e) =>
-        setNewStation({ ...newStation, pincode: e.target.value })
-      }
-      required
-    />
-  </label>
-  </label>
+                <div className="form-group">
+                  <label>Total Nozzel</label>
+                  <input
+                    type="number"
+                    value={newStation.connectors}
+                    onChange={(e) =>
+                      setNewStation({ ...newStation, connectors: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+              </div>
 
- 
+              <div className="form-group">
+                <label>State</label>
+                <select
+                  value={newStation.state}
+                  onChange={(e) =>
+                    setNewStation({ ...newStation, state: e.target.value })
+                  }
+                  required
+                >
+                  <option value="">Select State</option>
+                  {states.map((state, idx) => (
+                    <option key={idx} value={state}>{state}</option>
+                  ))}
+                </select>
+              </div>
 
-  <label>
-    Public Station:
-    <input
-      type="checkbox"
-      checked={newStation.details.type === "Public"}
-      onChange={(e) =>
-        setNewStation({
-          ...newStation,
-          details: {
-            ...newStation.details,
-            type: e.target.checked ? "Public" : "Private",
-          },
-        })
-      }
-    />
-    <span>{newStation.details.type === "Public" ? "Yes" : "No"}</span>
-    <label className="publish">
-    Publish:
-    <select
-      value={newStation.publish}
-      onChange={(e) =>
-        setNewStation({ ...newStation, publish: e.target.value })
-      }
-      required
-    >
-      <option value="">Select</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-    </select>
-  </label>
-  </label>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    value={newStation.city}
+                    onChange={(e) =>
+                      setNewStation({ ...newStation, city: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Pincode</label>
+                  <input
+                    type="number"
+                    value={newStation.pincode}
+                    onChange={(e) =>
+                      setNewStation({ ...newStation, pincode: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+              </div>
 
-  
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Station Type (Public / Private)</label>
+                  <input
+                    type="text"
+                    value={newStation.details.type}
+                    onChange={(e) =>
+                      setNewStation({
+                        ...newStation,
+                        details: { ...newStation.details, type: e.target.value },
+                      })
+                    }
+                    placeholder="e.g. Public or Private"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Publish</label>
+                  <select
+                    value={newStation.publish}
+                    onChange={(e) =>
+                      setNewStation({ ...newStation, publish: e.target.value })
+                    }
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+              </div>
 
-  <label>
-    Mobile No:
-    <input 
-    className="tank"
-      type="tel"
-      value={newStation.details.mobile}
-      placeholder="+91XXXXXXXXXX"
-      onChange={(e) =>
-        setNewStation({
-          ...newStation,
-          details: {
-            ...newStation.details,
-            mobile: e.target.value.startsWith("+91")
-              ? e.target.value
-              : `+91${e.target.value}`,
-          },
-        })
-      }
-      required
-    />
-    
-  <label className="Tank" >
-    Tank Capacity (L):
-    <input className="tank"
-      type="number"
-      value={newStation.details.tank}
-      onChange={(e) =>
-        setNewStation({
-          ...newStation,
-          details: { ...newStation.details, tank: e.target.value },
-        })
-      }
-      required
-    />
-  </label>
-  </label>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Mobile No</label>
+                  <input
+                    type="tel"
+                    value={newStation.details.mobile}
+                    placeholder="+91"
+                    onChange={(e) =>
+                      setNewStation({
+                        ...newStation,
+                        details: {
+                          ...newStation.details,
+                          mobile: e.target.value.startsWith("+91")
+                            ? e.target.value
+                            : `+91${e.target.value}`,
+                        },
+                      })
+                    }
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Tank Capacity (L)</label>
+                  <input
+                    type="number"
+                    value={newStation.details.tank}
+                    onChange={(e) =>
+                      setNewStation({
+                        ...newStation,
+                        details: { ...newStation.details, tank: e.target.value },
+                      })
+                    }
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Latitude</label>
+                  <input
+                    type="text"
+                    value={newStation.details.latitude}
+                    onChange={(e) =>
+                      setNewStation({
+                        ...newStation,
+                        details: { ...newStation.details, latitude: e.target.value },
+                      })
+                    }
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Longitude</label>
+                  <input
+                    type="text"
+                    value={newStation.details.longitude}
+                    onChange={(e) =>
+                      setNewStation({
+                        ...newStation,
+                        details: { ...newStation.details, longitude: e.target.value },
+                      })
+                    }
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Address (from Geo)</label>
+                <input
+                  type="text"
+                  value={newStation.details.location}
+                  readOnly
+                />
+              </div>
+
+              <button type="submit" className="submit-btn">Add Station</button>
+            </form>
 
 
-  <label>
-    Latitude:
-    <input
-      type="text"
-      value={newStation.details.latitude}
-      onChange={(e) => {
-        const latitude = e.target.value;
-        setNewStation({
-          ...newStation,
-          details: { ...newStation.details, latitude },
-        });
-      }}
-      required
-    />
-     <label className="Longitude">
-    Longitude:
-    <input
-      type="text"
-      value={newStation.details.longitude}
-      onChange={(e) => {
-        const longitude = e.target.value;
-        setNewStation({
-          ...newStation,
-          details: { ...newStation.details, longitude },
-        });
-      }}
-      required
-    />
-  </label>
-  </label>
-  <label>
-    Address (from Geo):
-    <input
-    className="Address"
-      type="text"
-      value={newStation.details.location}
-      readOnly
-    />
-  </label>
-
-  <button type="submit">Add Station</button>
-</form>
 
           </div>
         </div>
@@ -471,8 +482,8 @@ useEffect(() => {
                     <h4>{selectedStation.details?.status || "Unknown"}</h4>
                   </div>
                   <div className="station-card">
-                    <p>No. of Phases</p>
-                    <h4>1</h4>
+                    <p>Nozzel Status</p>
+                    <h4>Active</h4>
                   </div>
                   <div className="station-card">
                     <p>Tank Capacity</p>
@@ -491,7 +502,7 @@ useEffect(() => {
               {/* RIGHT */}
               <div className="station-details-right">
                 <div className="station-tab-header">
-                  {["Chargers", "Station Statistics", "Tokens"].map((tab) => (
+                  {["Dispensions", "Dispension Statistics", "Tokens"].map((tab) => (
                     <span
                       key={tab}
                       className={activeTab === tab ? "active-tab" : "inactive-tab"}
@@ -501,7 +512,7 @@ useEffect(() => {
                     </span>
                   ))}
                 </div>
-                {activeTab === "Chargers" && (
+                {activeTab === "Dispensions" && (
                   <table className="station-overview-table">
                     <thead>
                       <tr>
@@ -524,27 +535,35 @@ useEffect(() => {
                   </table>
                 )}
 
-                {activeTab === "Station Statistics" && (
+                {activeTab === "Dispension Statistics" && (
                   <div className="station-statistics">
                     <div className="station-date-range">
                       <input type="date" />
                     </div>
                     <div className="station-stats-grid">
                       <div className="station-card">
-                        <p>Revenue (excl.GST)</p>
-                        <h4>₹1000</h4>
+                        <p>PH</p>
+                        <h4>10</h4>
                       </div>
                       <div className="station-card">
-                        <p>Total Sessions</p>
+                        <p>TDS</p>
                         <h4>02</h4>
                       </div>
                       <div className="station-card">
-                        <p>Total Capacity</p>
-                        <h4>1000L</h4>
+                        <p>Turbidity</p>
+                        <h4>10</h4>
                       </div>
                       <div className="station-card">
-                        <p>Capacity Used</p>
+                        <p>Water Level</p>
                         <h4>589L</h4>
+                      </div>
+                      <div className="station-card">
+                        <p>D1</p>
+                        <h4>1</h4>
+                      </div>
+                      <div className="station-card">
+                        <p>D2</p>
+                        <h4>1</h4>
                       </div>
                     </div>
                   </div>
@@ -555,9 +574,18 @@ useEffect(() => {
             </div>
           </>
         )}
-        <button className="station-delete-btn" onClick={handleDeleteStation}>
-          Delete Station
-        </button>
+        <div className="station-btn">
+          <button className="station-restart-btn" onClick={handleRestartStation}>
+            Restart Station
+          </button>
+          <button className="station-start-btn" onClick={handleStartServices}>
+            Start Services
+          </button>
+          <button className="station-delete-btn" onClick={handleDeleteStation}>
+            Delete Station
+          </button>
+        </div>
+
       </div>
     </div>
   );

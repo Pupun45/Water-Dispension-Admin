@@ -1,15 +1,22 @@
-import React from 'react';
-import '../App.css';
-import ApexChart from '../Components/ApexChart';
-import IndiaMap from '../Components/IndiaMap';
-import ChartBoard from '../Components/ChartBoard';
+import React from "react";
+import "../App.css";
+import ApexChart from "../Components/ApexChart";
+import IndiaMap from "../Components/IndiaMap";
+import ChartBoard from "../Components/ChartBoard";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateTotal,
+  updateAvailable,
+  updateUnavailable,
+  updateFaulted,
+} from "../Store/Slices/dispensionSlice.js";
+
 const Home = () => {
-  const Dispension = {
-    total: { count: 3, color: 'home-total-card' },
-    available: { count: 3, color: 'home-available-card' },
-    unavailable: { count: 0, color: 'home-unavailable-card' },
-    faulted: { count: 0, color: 'home-faulted-card' },
-  };
+  //  Read data from Redux store
+  const Dispension = useSelector((state) => state.dispension);
+
+  //  Dispatch actions to update state
+  const dispatch = useDispatch();
 
   const StatCard = ({ title, count, color }) => (
     <div className={`home-card home-stat-card ${color}`}>
@@ -22,6 +29,23 @@ const Home = () => {
     <div className="home-dashboard-container">
       <div className="home-content-container">
         <h2 className="home-card-title">Water Dispensation Station</h2>
+
+        {/*  Demo buttons to update Redux state */}
+        <div style={{ marginBottom: "20px" }}>
+          <button onClick={() => dispatch(updateTotal(5))}>
+            Set Total = 5
+          </button>
+          <button onClick={() => dispatch(updateAvailable(2))} style={{ marginLeft: "10px" }}>
+            Set Available = 2
+          </button>
+          <button onClick={() => dispatch(updateUnavailable(1))} style={{ marginLeft: "10px" }}>
+            Set Unavailable = 1
+          </button>
+          <button onClick={() => dispatch(updateFaulted(1))} style={{ marginLeft: "10px" }}>
+            Set Faulted = 1
+          </button>
+        </div>
+
         <div className="home-grid-layout">
           <div className="home-col-span-1 home-space-y-6">
             <div className="home-card home-map-card">

@@ -130,7 +130,7 @@ const Invoice = () => {
 
   return (
     <div className="invoice-container">
-      <h2>Invoice</h2>
+      <h2 class="home-card-title">Invoice</h2>
       <div className="summary-header">
         <span>
           Pending Settlements:{" "}

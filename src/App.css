@@ -20,6 +20,131 @@
     border: 2px solid #f1f1f1;
   }
 
+  /* ---------------------------------------------- Login.jsx-------------------------------------- */
+
+  .log-login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    width: 100%;
+    position: fixed;
+    background: url(./Components/back.jpg) no-repeat center center/cover;
+  }
+
+  .log-login-section::before {
+    content: "";
+    background-color: #9c9c9c99;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  .log-form-box {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 450px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+  }
+
+  .log-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .log-title {
+    color: #fff;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+
+  .log-inputbox {
+    position: relative;
+    border-bottom: 2px solid #fff;
+    margin: 20px 0;
+    width: 310px;
+  }
+
+  .log-label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 1em;
+    pointer-events: none;
+    transition: 0.5s;
+  }
+
+  .log-input:focus~.log-label,
+  .log-input:valid~.log-label {
+    top: -5px;
+  }
+
+  .log-input {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    padding: 0 35px 0 5px;
+    color: #fff;
+  }
+
+  .log-inputbox ion-icon {
+    position: absolute;
+    right: 8px;
+    top: 20px;
+    color: #fff;
+    font-size: 1.2em;
+  }
+
+  .log-password-box {
+    position: relative;
+  }
+
+  .log-toggle-eye {
+    position: absolute;
+    right: 0px;
+    top: 0%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;
+    color: #fff;
+  }
+
+  .log-error {
+    color: red;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+
+  .log-btn {
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+  }
+
   /* ---------------------------------------------- Slidebar.jsx-------------------------------------- */
   .sidebar {
     width: 200px;
@@ -67,6 +192,9 @@
   .toggle-btn svg {
     font-size: 14px;
     transition: font-size 0.3s ease;
+    width: 25px;
+    height: 25px;
+
   }
 
   .sidebar.collapsed .toggle-btn svg {
@@ -166,6 +294,60 @@
       padding: 10px;
     }
   }
+.user-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .user-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+.user-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #1e90ff88; 
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+  .dropdown-menu {
+  position: absolute;
+  top: -140px;
+  right: -50px;
+  background: rgba(255, 255, 255, 0.1); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 10px 0;
+  min-width: 150px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-menu button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  text-align: left;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background 0.2s;
+}
+
+.dropdown-menu button:hover {
+  background: #014f86;
+}
 
   /*-------------------------------------------- Home.jsx-------------------------------------------- */
   .home-session-metrics-card {
@@ -192,7 +374,6 @@
 
   .home-content-container {
     width: 100%;
-    max-width: 1280px;
     margin: 0 auto;
   }
 
@@ -381,16 +562,18 @@
   }
 
   /* ------------------------------------------- Station.jsx --------------------------------------------*/
-.sation-data{
-  width: 600px;
+  .sation-data {
+    width: 600px;
     padding: 8px 14px;
     border-radius: 8px;
     background-color: #e7ebf0;
     border: 1px solid #000000;
-}
+  }
+
   .station-container {
     padding: 20px;
   }
+
   .station-header {
     padding: 10px;
     padding-right: 45px;
@@ -511,85 +694,146 @@
     background: #b58900;
   }
 
-  /* Modal */
-  .station-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-  }
-
-  .station-modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 500px;
-    position: relative;
-  }
-
-  .station-close-btn {
-    border: none;
-    background: none;
-    font-size: 14px;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-  }
-
-  .station-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .station-form input,
-  .station-form select,
-  .station-form button {
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-.tank{
-  padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    width: 25%;
-}
-.publish{
-  padding-left: 27%;
-}
-.pincode{
-  padding-left: 11%;
-}
-.Connectors{
-  width: 27%;
-}
-.State{
+ .station-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 10px;
 }
-.Longitude{
-  padding-left: 4%;
+
+.station-modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
-.Address{
-  width: 97%;
+
+.station-close-btn {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
 }
-.Tank{
-  padding-left: 7%;
+.station-close {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 12px;
 }
-  .station-form button {
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
+
+.station-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+
+.station-form input,
+.station-form select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.submit-btn {
+  background: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease-in;
+}
+
+.submit-btn:hover {
+  background: #0056b3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 480px) {
+  .station-modal-content {
+    padding: 15px;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+}
+
+.station-action-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+}
+
+.station-delete-btn,
+.station-restart-btn,
+.station-start-btn {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+.station-btn{
+    display: flex;
+    float: right;
+    gap: 10px;
+    margin: 1%;
+}
+.station-delete-btn {
+  background: #f14e48; 
+}
+
+.station-restart-btn {
+  background: #f0ad4e; 
+}
+
+.station-start-btn {
+  background: #5cb85c; 
+}
 
   /* Slide Panel */
   .station-slide-panel {
@@ -614,19 +858,6 @@
   .station-panel-content {
     margin-top: 40px;
   }
-
-  .station-delete-btn {
-    display: flex;
-    float: right;
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    margin: 10px 0 0 0;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-
   /* Map */
   .station-map-container {
     border-radius: 8px;

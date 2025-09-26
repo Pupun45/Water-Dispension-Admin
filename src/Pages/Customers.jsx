@@ -44,7 +44,7 @@ const Customers = () => {
 
   return (
     <div className="customers-container">
-      <h2>Customers</h2>
+      <h2 class="home-card-title">Customers</h2>
       <div className="customers-header">
         <span>Total Customers: {filteredCustomers.length}</span>
         <div className="search-wrapper">
