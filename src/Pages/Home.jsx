@@ -29,23 +29,6 @@ const Home = () => {
     <div className="home-dashboard-container">
       <div className="home-content-container">
         <h2 className="home-card-title">Water Dispensation Station</h2>
-
-        {/*  Demo buttons to update Redux state */}
-        <div style={{ marginBottom: "20px" }}>
-          <button onClick={() => dispatch(updateTotal(5))}>
-            Set Total = 5
-          </button>
-          <button onClick={() => dispatch(updateAvailable(2))} style={{ marginLeft: "10px" }}>
-            Set Available = 2
-          </button>
-          <button onClick={() => dispatch(updateUnavailable(1))} style={{ marginLeft: "10px" }}>
-            Set Unavailable = 1
-          </button>
-          <button onClick={() => dispatch(updateFaulted(1))} style={{ marginLeft: "10px" }}>
-            Set Faulted = 1
-          </button>
-        </div>
-
         <div className="home-grid-layout">
           <div className="home-col-span-1 home-space-y-6">
             <div className="home-card home-map-card">
